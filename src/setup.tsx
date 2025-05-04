@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useProjectStore, Project } from '../state/projectStore';
+import { useProjectStore, Project } from './state/projectStore';
 
 interface FormData extends Project {}
 
