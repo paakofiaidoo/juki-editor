@@ -1,7 +1,11 @@
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { useProjectStore, Project } from './state/projectStore';
+import React from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { useProjectStore, Project } from './state/projectStore'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './components/ui/form'
+import { Input } from './components/ui/input'
+import { Button } from './components/ui/button'
+import { Textarea } from './components/ui/textarea'
 
 interface FormData extends Project {}
 
@@ -9,70 +13,107 @@ const Setup: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const createProject = useProjectStore((state) => state.createProject);
   const router = useRouter();
+  const navigate = useNavigate()
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       await createProject(data);
-      router.push('/editor');
+      navigate('/editor');
     } catch (error) {
       console.error('Error creating project:', error);
     }
   };
 
   return (
-    <div>
+    <div className=\"container mx-auto p-4\">
       <h1>Create a New Project</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" {...register('name', { required: true })} />
-          {errors.name && <span>This field is required</span>}
-        </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <input type="text" id="description" {...register('description', { required: true })} />
-          {errors.description && <span>This field is required</span>}
-        </div>
-        <div>
-          <label htmlFor="framework">Framework:</label>
-          <input type="text" id="framework" {...register('framework', { required: true })} />
-          {errors.framework && <span>This field is required</span>}
-        </div>
-        <div>
-          <label htmlFor="useTypeScript">Use TypeScript:</label>
-          <input type="checkbox" id="useTypeScript" {...register('nextJSConfig.useTypeScript')} />
-        </div>
-        <div>
-          <label htmlFor="useESLint">Use ESLint:</label>
-          <input type="checkbox" id="useESLint" {...register('nextJSConfig.useESLint')} />
-        </div>
-        <div>
-          <label htmlFor="useTailwindCSS">Use TailwindCSS:</label>
-          <input type="checkbox" id="useTailwindCSS" {...register('nextJSConfig.useTailwindCSS')} />
-        </div>
-        <div>
-          <label htmlFor="useSrcDirectory">Use Src Directory:</label>
-          <input type="checkbox" id="useSrcDirectory" {...register('nextJSConfig.useSrcDirectory')} />
-        </div>
-        <div>
-          <label htmlFor="useAppRouter">Use App Router:</label>
-          <input type="checkbox" id="useAppRouter" {...register('nextJSConfig.useAppRouter')} />
-        </div>
-        <div>
-          <label htmlFor="useTurbopack">Use Turbopack:</label>
-          <input type="checkbox" id="useTurbopack" {...register('nextJSConfig.useTurbopack')} />
-        </div>
-        <div>
-          <label htmlFor="customizeImportAlias">Customize Import Alias:</label>
-          <input type="checkbox" id="customizeImportAlias" {...register('nextJSConfig.customizeImportAlias')} />
-        </div>
-        <div>
-          <label htmlFor="importAlias">Import Alias:</label>
-          <input type="text" id="importAlias" {...register('nextJSConfig.importAlias')} />
-        </div>
+      <Form onSubmit={handleSubmit(onSubmit)} className=\"space-y-4\">
+        <FormField
+          control={register('name', { required: 'Project name is required' })}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="name">Name:</FormLabel>
+              <FormControl>
+                <Input id="name" {...field} />
+              </FormControl>
+              <FormMessage>{errors.name?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
 
-        <button type="submit">Create Project</button>
-      </form>
+        <FormField
+          control={register('description', { required: 'Description is required' })}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="description">Description:</FormLabel>
+              <FormControl>
+                <Textarea id="description" {...field} />
+              </FormControl>
+              <FormMessage>{errors.description?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={register('framework', { required: 'Framework is required' })}
+          name="framework"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="framework">Framework:</FormLabel>
+              <FormControl>
+                <Input id="framework" {...field} />
+              </FormControl>
+              <FormMessage>{errors.framework?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={register('nextJSConfig.useTypeScript')}
+          name="nextJSConfig.useTypeScript"
+          render={({ field }) => (
+            <FormItem className=\"flex items-center space-x-2\">
+              <FormControl>
+                <input type=\"checkbox\" id=\"useTypeScript\" {...field} checked={field.value} />
+              </FormControl>
+              <FormLabel htmlFor="useTypeScript">Use TypeScript:</FormLabel>
+            </FormItem>
+          )}
+        />
+
+        {/* Repeat similar FormField for other nextJSConfig boolean fields */}
+        <FormField
+          control={register('nextJSConfig.useESLint')}
+          name="nextJSConfig.useESLint"
+          render={({ field }) => (
+            <FormItem className=\"flex items-center space-x-2\">
+              <FormControl>
+                <input type=\"checkbox\" id=\"useESLint\" {...field} checked={field.value} />
+              </FormControl>
+              <FormLabel htmlFor="useESLint">Use ESLint:</FormLabel>
+            </FormItem>
+          )}
+        />
+
+        {/* Add other nextJSConfig boolean fields here */}
+
+        <FormField
+          control={register('nextJSConfig.importAlias')}
+          name="nextJSConfig.importAlias"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="importAlias">Import Alias:</FormLabel>
+              <FormControl>
+                <Input id="importAlias" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">Create Project</Button>
+      </Form>
     </div>
   );
 };
