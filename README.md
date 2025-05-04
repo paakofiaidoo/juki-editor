@@ -1,54 +1,31 @@
-# React + TypeScript + Vite
+# Drag and Drop Next JS App Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application is a drag-and-drop editor designed to create pages for a Next.js application.  Users can visually build their app's pages by dragging and dropping React components onto a canvas.
 
-Currently, two official plugins are available:
+**Early Development:**
+This project is currently in its early stages of development. Many features are planned and will be implemented iteratively.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Key Features (Planned):**
 
-## Expanding the ESLint configuration
+- **Drag and Drop Components:** Intuitive interface for dragging and dropping pre-built or custom components onto a page canvas.
+- **Generate Next.js Pages:** Automatically generate clean and structured Next.js code based on the visual layout.
+- **Code Preview:** View the generated code in real-time as the page is being built.
+- **Component Library:** A collection of reusable React components ready to be used in the editor.
+- **Export Project:** Ability to export the entire Next.js project with the created pages.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Usage
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Once the application is more developed, detailed instructions on how to install, run, and use the editor will be provided here.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Contributing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+We welcome contributions! If you're interested in helping improve this project, please follow these steps:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and ensure they are well-tested.
+4. Commit your changes with clear and concise messages.
+5. Push your branch to your fork.
+6. Open a pull request to the main repository, describing your changes.
+
+Please note that as the project is in early development, the contribution guidelines might evolve.
