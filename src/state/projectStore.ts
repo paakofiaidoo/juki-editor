@@ -11,7 +11,7 @@ interface NextJSProjectConfig {
   ImportAlias: string;
 }
 
-interface Project {
+export interface Project {
   Name: string;
   Description: string;
   Framework: string;
@@ -24,6 +24,7 @@ interface ProjectState {
   createProject: (project: Project) => Promise<void>;
 }
 
+// @ts-ignore
 const ENGINE_API_URL = import.meta.env.VITE_ENGINE_API_URL;
 
 const defaultProject: Project = {

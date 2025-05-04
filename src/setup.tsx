@@ -7,12 +7,22 @@ import { Input } from './components/ui/input'
 import { Button } from './components/ui/button'
 import { Textarea } from './components/ui/textarea'
 
-interface FormData extends Project {}
+interface FormData extends Project {
+    name: string;
+    description: string;
+    framework: string;
+    nextJSConfig: {
+        useTypeScript: boolean;
+        useESLint: boolean;
+        useTailwindCSS: boolean;
+        useSrcDirectory: boolean;
+        useAppRouter: boolean;
+    }
+}
 
 const Setup: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const createProject = useProjectStore((state) => state.createProject);
-  const router = useRouter();
   const navigate = useNavigate()
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -25,9 +35,9 @@ const Setup: React.FC = () => {
   };
 
   return (
-    <div className=\"container mx-auto p-4\">
+    <div className="container mx-auto p-4">
       <h1>Create a New Project</h1>
-      <Form onSubmit={handleSubmit(onSubmit)} className=\"space-y-4\">
+      <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={register('name', { required: 'Project name is required' })}
           name="name"
@@ -74,9 +84,9 @@ const Setup: React.FC = () => {
           control={register('nextJSConfig.useTypeScript')}
           name="nextJSConfig.useTypeScript"
           render={({ field }) => (
-            <FormItem className=\"flex items-center space-x-2\">
+            <FormItem className="flex items-center space-x-2">
               <FormControl>
-                <input type=\"checkbox\" id=\"useTypeScript\" {...field} checked={field.value} />
+                <input type="checkbox" id="useTypeScript" {...field} checked={field.value} />
               </FormControl>
               <FormLabel htmlFor="useTypeScript">Use TypeScript:</FormLabel>
             </FormItem>
@@ -88,9 +98,9 @@ const Setup: React.FC = () => {
           control={register('nextJSConfig.useESLint')}
           name="nextJSConfig.useESLint"
           render={({ field }) => (
-            <FormItem className=\"flex items-center space-x-2\">
+            <FormItem className="flex items-center space-x-2">
               <FormControl>
-                <input type=\"checkbox\" id=\"useESLint\" {...field} checked={field.value} />
+                <input type="checkbox" id="useESLint" {...field} checked={field.value} />
               </FormControl>
               <FormLabel htmlFor="useESLint">Use ESLint:</FormLabel>
             </FormItem>
