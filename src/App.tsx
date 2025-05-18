@@ -31,13 +31,7 @@ function App() {
 
   return (
     <>
-      <header>
-        <h1>Drag and Drop Next JS App Builder</h1>
-      </header>
-      {project ? (
-        <div>{/* Editor page content will go here */}</div>
-      ) : null}
-
+    
       {!loading && (
         <BrowserRouter>
           <Routes>
