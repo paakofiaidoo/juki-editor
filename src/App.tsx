@@ -26,7 +26,7 @@ function App() {
       setLoading(false);
     };
 
-    checkProject();
+    checkProject().then(() => {});
   }, [getProject]);
 
   return (
@@ -46,7 +46,7 @@ function App() {
             <Route path="*" element={projectExists ? <Navigate to="/editor" /> : <Navigate to="/setup" />} />
           </Routes>
         </BrowserRouter>
-      )} 
+      )}
     </>
   )
 }

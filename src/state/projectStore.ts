@@ -24,9 +24,8 @@ interface ProjectState {
   createProject: (project: Project) => Promise<void>;
 }
 
-// @ts-ignore
 const ENGINE_API_URL = import.meta.env.VITE_ENGINE_API_URL;
-
+console.log(ENGINE_API_URL)
 const defaultProject: Project = {
   Name: '',
   Description: '',
@@ -47,6 +46,7 @@ export const useProjectStore = create<ProjectState>((set) => ({
   project: defaultProject,
   getProject: async (projectName: string) => {
     try {
+      console.log(`${ENGINE_API_URL}/projects/${projectName}`)
       const response = await fetch(`${ENGINE_API_URL}/projects/${projectName}`);
       if (!response.ok) {
         throw new Error('Failed to get project');
