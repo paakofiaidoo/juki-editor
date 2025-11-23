@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Juki Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Juki Editor** is the visual frontend for the Juki Builder platform. It provides a comprehensive WYSIWYG environment for creating React and Next.js applications.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The editor is a single-page React application built with Vite. It allows developers to:
+- **Visually construct UIs**: Drag and drop elements to build pages.
+- **Manage State**: Define and bind global state variables.
+- **Generate Components**: Use Gemini AI to generate React components from text descriptions.
+- **Export Code**: Get clean, production-ready JSX code.
 
-## React Compiler
+## Technology Stack
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **Framework**: React 18 + Vite
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Drag & Drop**: `@atlaskit/pragmatic-drag-and-drop`
+- **AI**: Google Gemini API (`@google/genai`)
+- **Code Editor**: Monaco Editor
 
-## Expanding the ESLint configuration
+## Setup & Development
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+To run the editor independently:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1.  Navigate to the editor directory:
+    ```bash
+    cd .juki/editor
+    ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2.  Install dependencies:
+    ```bash
+    pnpm install
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  Start the development server:
+    ```bash
+    pnpm dev
+    ```
+    The editor will be available at `http://localhost:8889`.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Architecture Highlights
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Data Model**: The entire application state is driven by a normalized JSON structure (Project, PageItem, AnyCanvasItem).
+- **Rendering**: A recursive rendering pipeline converts the JSON state into live React components on the canvas.
+- **Persistence**: Projects are currently persisted to `localStorage` (MVP) but are designed to sync with the Juki Engine.

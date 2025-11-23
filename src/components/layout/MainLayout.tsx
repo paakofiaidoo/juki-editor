@@ -3,7 +3,7 @@ import { dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element
 import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { useApp } from '../../hooks/useApp';
-import { DndInstruction, DndSourceData } from '../../types';
+import { type DndInstruction, type DndSourceData } from '../../types';
 import { Header } from './Header';
 import { LeftSidebar } from './LeftSidebar';
 import { Inspector } from './Inspector';
@@ -25,7 +25,7 @@ export const MainLayout = ({
 }: MainLayoutProps) => {
     const { moveItem, addItem, activeProject, activePageId, findItemInTree } = useApp();
     const ref = useRef<HTMLDivElement>(null);
-    
+
     useEffect(() => {
         if (activeProject) {
             document.title = `${activeProject.name} - Juki Editor`;
@@ -51,8 +51,8 @@ export const MainLayout = ({
                 const destination = location.current.dropTargets[0];
                 const destData = destination?.data as {id: string | null};
 
-                const sourceData = source.data as DndSourceData;
-                
+                const sourceData = source.data as unknown as DndSourceData;
+
                 const activePage = activeProject?.pages.find(p => p.id === activePageId);
                 if (!activePage) return;
 
@@ -60,7 +60,7 @@ export const MainLayout = ({
                 const instruction: DndInstruction = closestEdge
                   ? { type: closestEdge === 'top' ? 'reorder-before' : 'reorder-after' }
                   : { type: 'make-child' };
-                
+
                 const destId = destData?.id ?? null;
 
                 if (sourceData.type === 'canvas-item') {
@@ -79,7 +79,7 @@ export const MainLayout = ({
                          addItem(null, sourceData.itemSpec, -1);
                          return;
                     };
-                    
+
                     let parentId: string | null = null;
                     let dropIndex: number = -1;
 
@@ -97,8 +97,8 @@ export const MainLayout = ({
 
 
     return (
-        <div ref={ref} className="h-screen w-screen bg-juki-dark text-juki-light flex flex-col font-sans overflow-hidden">
-            <Header 
+        <div ref={ref} className="h-screen w-screen bg-background text-foreground flex flex-col font-sans overflow-hidden">
+            <Header
                 toggleLeftSidebar={toggleLeftSidebar}
                 toggleRightSidebar={toggleRightSidebar}
             />

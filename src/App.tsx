@@ -5,6 +5,7 @@ import { useApp } from '@/hooks/useApp';
 import { CreateFirstProject } from '@/components/ui/CreateFirstProject';
 import { FontManager } from '@/components/layout/FontManager';
 import { PreviewMode } from '@/components/ui/PreviewMode';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
 
 const AppContent = () => {
   const [isLeftSidebarVisible, setIsLeftSidebarVisible] = useState(true);
@@ -14,7 +15,7 @@ const AppContent = () => {
   if (projects.length === 0) {
     return <CreateFirstProject onCreateProject={addProject} />;
   }
-  
+
   if (isPreviewMode) {
     return <PreviewMode />;
   }
@@ -32,8 +33,10 @@ const AppContent = () => {
 export default function App() {
   return (
     <AppProvider>
-      <FontManager />
-      <AppContent />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <FontManager />
+        <AppContent />
+      </ThemeProvider>
     </AppProvider>
   );
 }

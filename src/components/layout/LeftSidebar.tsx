@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Layers, Component, Image, Wand2, Layout, GalleryHorizontal, Package, Smile, Zap, Cloud, Files, Palette,LayoutListIcon } from 'lucide-react';
+import { Layers, Component, Image, Wand2, Layout, GalleryHorizontal, Package, Zap, Cloud, Files, Palette,LayoutListIcon } from 'lucide-react';
 import { PanelHeader } from '../ui/PanelHeader';
 import { SidebarTab } from '../ui/SidebarTab';
+import { TooltipProvider } from '../ui/tooltip';
 import { LayersPanel } from '../panels/LayersPanel';
 import { ComponentsPanel } from '../panels/ComponentsPanel';
 import { AssetsPanel } from '../panels/AssetsPanel';
@@ -35,19 +36,21 @@ export const LeftSidebar = ({ isVisible }: { isVisible: boolean }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="w-[300px] bg-juki-dark-2 flex h-full shrink-0 border-r border-juki-dark-3">
-      <div className="w-14 bg-juki-dark border-r border-juki-dark-3 flex flex-col items-center py-2">
-        {tabs.map(tab => (
-          <SidebarTab
-            key={tab.name}
-            icon={tab.icon}
-            label={tab.name}
-            active={activeTab === tab.name}
-            onClick={() => setActiveTab(tab.name)}
-          />
-        ))}
+    <div className="w-[300px] bg-background flex h-full shrink-0 border-r border-border">
+      <div className="w-14 bg-muted/20 border-r border-border flex flex-col items-center py-2">
+        <TooltipProvider delayDuration={0}>
+            {tabs.map(tab => (
+            <SidebarTab
+                key={tab.name}
+                icon={tab.icon}
+                label={tab.name}
+                active={activeTab === tab.name}
+                onClick={() => setActiveTab(tab.name)}
+            />
+            ))}
+        </TooltipProvider>
       </div>
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-card">
         <PanelHeader icon={<></>} title={activeTab} />
         <div className="flex-1 overflow-y-auto">{activeComponent}</div>
       </div>
