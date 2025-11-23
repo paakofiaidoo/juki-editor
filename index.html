@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Juki Editor</title>
+  </head>
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;700;900&display=swap');
+      body {
+          font-family: 'Inter', sans-serif;
+      }
+      @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 4px 0px #00f2a1; }
+          50% { box-shadow: 0 0 10px 2px #00f2a1; }
+      }
+      .selection-highlight-animated {
+          outline: 2px dashed #00f2a1; /* juki-green */
+          outline-offset: 2px;
+          animation: pulse-glow 2s ease-in-out infinite;
+      }
+      .parent-highlight {
+          outline: 1px solid rgba(59, 130, 246, 0.6); /* blue-500 */
+          outline-offset: 3px;
+      }
+  </style>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

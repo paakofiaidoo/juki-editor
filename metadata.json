@@ -1,0 +1,5 @@
+{
+  "name": "Juki Editor",
+  "description": "A web-based, WYSIWYG visual UI editor for developers. It allows for the construction of complex page layouts, management of reusable components, API integration, and visual manipulation of state and data bindings, with a focus on AI-assisted development and clean code generation.",
+  "requestFramePermissions": []
+}
