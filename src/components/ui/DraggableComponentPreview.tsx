@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { DndSourceData, UserComponent, DraggableComponentSpec } from '../../types';
-import { PreviewRenderer } from './PreviewRenderer';
+import React, { useRef, useEffect, useState } from "react";
+import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import { DndSourceData, UserComponent, DraggableComponentSpec } from "../../types";
+import { PreviewRenderer } from "./PreviewRenderer";
 
 interface DraggableComponentPreviewProps {
     component: UserComponent;
@@ -19,10 +19,10 @@ export const DraggableComponentPreview: React.FC<DraggableComponentPreviewProps>
             name: component.name,
             description: component.description,
             item: {
-                type: 'COMPONENT',
+                type: "COMPONENT",
                 componentType: component.id,
                 props: {},
-            }
+            },
         };
 
         const el = ref.current;
@@ -30,25 +30,21 @@ export const DraggableComponentPreview: React.FC<DraggableComponentPreviewProps>
 
         return draggable({
             element: el,
-            getInitialData: () => ({ type: 'new-item', itemId: itemSpec.id, itemSpec } as DndSourceData),
+            getInitialData: () => ({ type: "new-item", itemId: itemSpec.id, itemSpec } as unknown as Record<string, unknown>),
             onDragStart: () => setIsDragging(true),
             onDrop: () => setIsDragging(false),
         });
     }, [component]);
 
     return (
-        <div ref={ref} className={`p-2 rounded border bg-juki-dark-2 border-juki-dark-3 cursor-grab ${isDragging ? 'opacity-50' : ''}`}>
+        <div ref={ref} className={`p-2 rounded border bg-juki-dark-2 border-juki-dark-3 cursor-grab ${isDragging ? "opacity-50" : ""}`}>
             <div className="relative group">
                 <p className="font-semibold text-white truncate text-sm mb-1">{component.name}</p>
-                
+
                 <div className="h-20 w-full bg-white text-black relative overflow-hidden pointer-events-none rounded flex items-center justify-center p-2">
-                    {component.root ? (
-                         <PreviewRenderer item={component.root} userComponents={allUserComponents} />
-                    ): (
-                        <div className="text-xs text-red-500">No root</div>
-                    )}
+                    {component.root ? <PreviewRenderer item={component.root} userComponents={allUserComponents} /> : <div className="text-xs text-red-500">No root</div>}
                 </div>
-                 <p className="text-xs text-gray-400 truncate mt-1 h-4">{component.description}</p>
+                <p className="text-xs text-gray-400 truncate mt-1 h-4">{component.description}</p>
             </div>
         </div>
     );

@@ -19,6 +19,7 @@ export const initialProject: Project = {
   id: 'proj_1',
   name: 'My Juki Project',
   description: 'A new project created with Juki Editor.',
+  settings: { useTypescript: true, framework: "NextJS" },
   theme: defaultTheme,
   packageManager: null,
   packages: [],

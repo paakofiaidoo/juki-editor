@@ -1,42 +1,35 @@
-import { AppProvider } from '@/context/AppContext';
-import { MainLayout } from '@/components/layout/MainLayout';
-import { useState } from 'react';
-import { useApp } from '@/hooks/useApp';
-import { CreateFirstProject } from '@/components/ui/CreateFirstProject';
-import { FontManager } from '@/components/layout/FontManager';
-import { PreviewMode } from '@/components/ui/PreviewMode';
-import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import React from "react";
+import { AppProvider } from "./context/AppContext";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LandingPage } from "./pages/LandingPage";
+import { EditorPage } from "./pages/EditorPage";
+import { FontManager } from "./components/layout/FontManager";
+import { DragMonitor } from "./components/layout/DragMonitor";
+import { FeatureProvider } from "./context/FeatureContext";
 
-const AppContent = () => {
-  const [isLeftSidebarVisible, setIsLeftSidebarVisible] = useState(true);
-  const [isRightSidebarVisible, setIsRightSidebarVisible] = useState(true);
-  const { projects, addProject, isPreviewMode } = useApp();
+import { initLogInterceptor } from "./utils/log-interceptor";
 
-  if (projects.length === 0) {
-    return <CreateFirstProject onCreateProject={addProject} />;
-  }
+// Initialize log interceptor
+initLogInterceptor();
 
-  if (isPreviewMode) {
-    return <PreviewMode />;
-  }
-
-  return (
-    <MainLayout
-      isLeftSidebarVisible={isLeftSidebarVisible}
-      isRightSidebarVisible={isRightSidebarVisible}
-      toggleLeftSidebar={() => setIsLeftSidebarVisible(v => !v)}
-      toggleRightSidebar={() => setIsRightSidebarVisible(v => !v)}
-    />
-  );
+function App() {
+    return (
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <FeatureProvider>
+                <AppProvider>
+                    <DragMonitor />
+                    <FontManager />
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<LandingPage />} />
+                            <Route path="/editor/:projectId" element={<EditorPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                </AppProvider>
+            </FeatureProvider>
+        </ThemeProvider>
+    );
 }
 
-export default function App() {
-  return (
-    <AppProvider>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <FontManager />
-        <AppContent />
-      </ThemeProvider>
-    </AppProvider>
-  );
-}
+export default App;

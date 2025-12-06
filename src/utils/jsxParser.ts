@@ -32,8 +32,8 @@ const mapHtmlAttributesToProps = (attributes: NamedNodeMap): Record<string, any>
                 props['style'] = parseStyleString(attr.value);
                 break;
             case 'for':
-                 props['htmlFor'] = attr.value;
-                 break;
+                props['htmlFor'] = attr.value;
+                break;
             // Add other HTML to React attribute mappings if needed
             default:
                 props[attr.name] = attr.value;
@@ -47,14 +47,14 @@ const mapHtmlAttributesToProps = (attributes: NamedNodeMap): Record<string, any>
 
 const domNodeToCanvasItem = (node: Element): ElementCanvasItem | null => {
     if (node.nodeType !== Node.ELEMENT_NODE) return null;
-    
+
     const children: (AnyCanvasItem | string)[] = [];
     node.childNodes.forEach(child => {
         if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim()) {
             children.push(child.textContent.trim());
         } else if (child.nodeType === Node.ELEMENT_NODE) {
             const canvasItem = domNodeToCanvasItem(child as Element);
-            if(canvasItem) children.push(canvasItem);
+            if (canvasItem) children.push(canvasItem);
         }
     });
 
@@ -64,7 +64,7 @@ const domNodeToCanvasItem = (node: Element): ElementCanvasItem | null => {
     } else if (children.length > 0) {
         content = children.filter((c): c is AnyCanvasItem => typeof c !== 'string');
     }
-    
+
     return {
         id: crypto.randomUUID(),
         name: node.tagName.toLowerCase(),
@@ -84,7 +84,7 @@ const parseHtmlToCanvasItem = (html: string): AnyCanvasItem => {
         throw new Error('No valid root element found in HTML.');
     }
     const result = domNodeToCanvasItem(rootElement);
-     if (!result) {
+    if (!result) {
         throw new Error('Failed to parse HTML into a valid structure.');
     }
     return result;
@@ -110,8 +110,8 @@ const astNodeToValue = (node: any): any => {
             }
             return obj;
         }
-         if (expr.type === 'Literal') return expr.value;
-         return '{expression}';
+        if (expr.type === 'Literal') return expr.value;
+        return '{expression}';
     }
     return undefined;
 };
@@ -121,13 +121,13 @@ const astNodeToCanvasItem = (node: any): AnyCanvasItem | string | null => {
         const text = node.value.trim();
         return text.length > 0 ? text : null;
     }
-    
+
     if (node.type === 'JSXElement' || node.type === 'JSXFragment') {
         const openingElement = node.openingElement;
         const children = node.children;
         const tagName = openingElement?.name.name || 'fragment';
 
-        if(tagName === 'fragment') {
+        if (tagName === 'fragment') {
             // This is a fragment, its children are the real items
             const childItems = children
                 .map((child: any) => astNodeToCanvasItem(child))
@@ -154,12 +154,12 @@ const astNodeToCanvasItem = (node: any): AnyCanvasItem | string | null => {
 
         if (/^[A-Z]/.test(tagName)) { // Is a component (like an Icon)
             if (getIconNames().includes(tagName)) {
-                 const iconElement: IconCanvasItem = {
+                const iconElement: IconCanvasItem = {
                     id: crypto.randomUUID(), name: tagName, type: 'ICON', iconName: tagName, props,
                 };
                 return iconElement;
             }
-             // It's another component, render as a placeholder
+            // It's another component, render as a placeholder
             return {
                 id: crypto.randomUUID(), name: tagName, type: 'ELEMENT', tag: 'div',
                 props: { ...props, className: `${props.className || ''} p-2 border-dashed border-purple-500 text-purple-300 text-xs`.trim() },
@@ -171,7 +171,7 @@ const astNodeToCanvasItem = (node: any): AnyCanvasItem | string | null => {
         if (childItems.length === 1 && typeof childItems[0] === 'string') {
             content = childItems[0];
         } else if (childItems.length > 0) {
-            content = childItems.filter((c): c is AnyCanvasItem => typeof c !== 'string');
+            content = childItems.filter((c: any): c is AnyCanvasItem => typeof c !== 'string');
         }
 
         return {
@@ -185,9 +185,9 @@ export const parseJsxToCanvasItem = (jsx: string): AnyCanvasItem => {
     try {
         const ast = JsxParser.parse(jsx.trim(), { ecmaVersion: 'latest', sourceType: 'module' });
         const jsxRoot = (ast as any).body.find((node: any) => node.type === 'ExpressionStatement' && (node.expression.type === 'JSXElement' || node.expression.type === 'JSXFragment'));
-        
+
         if (!jsxRoot) {
-             throw new Error('Could not find a root JSX element.');
+            throw new Error('Could not find a root JSX element.');
         }
 
         const result = astNodeToCanvasItem(jsxRoot.expression);
@@ -230,7 +230,7 @@ export const parseComponentFileToCanvasItems = (code: string): AnyCanvasItem[] =
         if (!returnStatementNode || !returnStatementNode.argument) {
             throw new Error("Could not find a return statement with JSX.");
         }
-        
+
         const rootJsxNode = returnStatementNode.argument;
         if (rootJsxNode.type !== 'JSXElement' && rootJsxNode.type !== 'JSXFragment') {
             throw new Error("The return statement does not contain a valid JSX element or fragment.");
@@ -238,7 +238,7 @@ export const parseComponentFileToCanvasItems = (code: string): AnyCanvasItem[] =
 
         // The top level is usually a fragment like <>...</>
         if (rootJsxNode.type === 'JSXFragment') {
-             return rootJsxNode.children
+            return rootJsxNode.children
                 .map((child: any) => astNodeToCanvasItem(child))
                 .filter((item: any): item is AnyCanvasItem => !!item && typeof item !== 'string');
         } else {
@@ -247,10 +247,10 @@ export const parseComponentFileToCanvasItems = (code: string): AnyCanvasItem[] =
                 return [singleItem];
             }
         }
-        
+
         throw new Error("Failed to parse component file into a valid structure.");
 
-    } catch(error) {
+    } catch (error) {
         console.error("Acorn parsing error:", (error as Error).message);
         throw new Error(`Code Parsing failed: ${(error as Error).message}`);
     }

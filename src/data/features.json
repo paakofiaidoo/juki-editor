@@ -1,0 +1,7 @@
+{
+    "enableMultiAgent": false,
+    "enableCMS": false,
+    "enableRealTimeSync": true,
+    "enableAnimations": true,
+    "enableNextJsStructure": true
+}
