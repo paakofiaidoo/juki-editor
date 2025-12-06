@@ -196,7 +196,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     const refreshProjects = async () => {
         try {
-            const response = (await projectClient.listProjects({})) as any;
+            if (true) {
+                const response = await mockEngineClient.listProjects();
+                const mappedProjects = response.projects.map(mapProtoToInternal);
+                setProjects(mappedProjects);
+                return;
+            }
+
+            const response = (await projectClient.listProjects({ page: 1, pageSize: 10 })) as any;
             const mappedProjects: Project[] = (response.projects || []).map((p: any) => ({
                 id: p.id,
                 name: p.name,
