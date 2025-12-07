@@ -1,5 +1,4 @@
-import { ProtoProject, ProtoPage, ProtoLayout, ProtoRouteNode } from "../types/proto-mock";
-import { Project, Page, Layout, AnyCanvasItem, RouteNode } from "../types";
+import { parseComponentFileToCanvasItems } from "./jsxParser";
 
 export const mapProtoToInternal = (proto: ProtoProject): Project => {
     return {
@@ -7,10 +6,10 @@ export const mapProtoToInternal = (proto: ProtoProject): Project => {
         name: proto.name,
         description: proto.description || "",
         settings: {
-            useTypescript: proto.settings.useTypescript,
-            framework: proto.settings.framework as "NextJS" | "Vite" | "Remix" | "Astro" | "HTML",
+            useTypescript: proto.settings?.useTypescript || false,
+            framework: (proto.settings?.framework || "NextJS") as "NextJS" | "Vite" | "Remix" | "Astro" | "HTML",
         },
-        rootRoute: mapProtoRouteNode(proto.rootRoute),
+        rootRoute: proto.rootRoute ? mapProtoRouteNode(proto.rootRoute) : { id: "root", name: "Root", segment: "/", fullPath: "/", type: "STATIC", children: [] },
         pages: proto.pages.map(mapProtoPage),
         layouts: proto.layouts.map(mapProtoLayout),
         userComponents: [], // TODO: Map components if needed
@@ -37,19 +36,35 @@ export const mapProtoToInternal = (proto: ProtoProject): Project => {
         templates: [],
         apiDefinitions: [],
         stateDefinitions: [],
+        port: proto.port,
     };
 };
 
 const mapProtoPage = (p: ProtoPage): Page => {
     let content: AnyCanvasItem[] = [];
     try {
-        content = JSON.parse(p.content);
-        if (!Array.isArray(content)) {
-            // Handle single object vs array difference if any
-            content = [content] as any;
+        const parsed = JSON.parse(p.content);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+            content = parsed as any;
+        } else if (!Array.isArray(parsed) && parsed) {
+            content = [parsed] as any;
+        } else {
+            // Empty or invalid JSON content, try rawContent
+            if (p.rawContent) {
+                content = parseComponentFileToCanvasItems(p.rawContent);
+            }
         }
     } catch (e) {
-        console.warn("Failed to parse page content", e);
+        // If JSON parse fails, also try rawContent
+        if (p.rawContent) {
+            try {
+                content = parseComponentFileToCanvasItems(p.rawContent);
+            } catch (parseErr) {
+                console.warn("Failed to parse page raw content", parseErr);
+            }
+        } else {
+            console.warn("Failed to parse page content", e);
+        }
     }
 
     return {
@@ -59,9 +74,7 @@ const mapProtoPage = (p: ProtoPage): Page => {
         route: p.route,
         path: `app${p.route === "/" ? "" : p.route}/page.tsx`,
         props: {},
-        children: [], // Computed tree logic handles this later? Or is this the content?
-        // In the new architecture, 'children' might be the Composition of Layout + Page.
-        // For now, let's put the raw content here so it renders.
+        children: [],
         content: content,
         layoutId: p.layoutId,
     };
@@ -79,20 +92,27 @@ const mapProtoLayout = (l: ProtoLayout): Layout => {
     return {
         id: l.id,
         name: l.name,
-        path: l.path,
+        path: "", // Proto doesn't have path for layout explicitly? It has Route.
         root: root as AnyCanvasItem,
-        // Helper fields
         route: l.route,
     };
 };
 
 const mapProtoRouteNode = (node: ProtoRouteNode): RouteNode => {
+    let type: "STATIC" | "DYNAMIC" | "CATCH_ALL" = "STATIC";
+    switch (node.type) {
+        case PageType.STATIC: type = "STATIC"; break;
+        case PageType.DYNAMIC: type = "DYNAMIC"; break;
+        case PageType.CATCH_ALL: type = "CATCH_ALL"; break;
+        default: type = "STATIC";
+    }
+
     return {
         id: node.id,
         name: node.name,
         segment: node.segment,
         fullPath: node.fullPath,
-        type: node.type === 1 ? 'STATIC' : node.type === 2 ? 'DYNAMIC' : node.type === 3 ? 'CATCH_ALL' : 'STATIC',
+        type: type,
         pageId: node.pageId,
         layoutId: node.layoutId,
         children: node.children ? node.children.map(mapProtoRouteNode) : [],

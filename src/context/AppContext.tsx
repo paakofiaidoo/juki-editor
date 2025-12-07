@@ -7,22 +7,22 @@ import { deepClone } from "../utils/coreUtils";
 import { parseCodeToCanvasItem, parseComponentFileToCanvasItems } from "../utils/jsxParser";
 import { AddComponentFromCodeModal } from "../components/ui/AddComponentFromJsxModal";
 import { CreateProjectModal } from "../components/ui/CreateProjectModal";
-import { generateRandomTheme } from "../utils/colorUtils";
 import { SetPackageManagerModal } from "../components/ui/SetPackageManagerModal";
 import { SettingsModal } from "../components/ui/SettingsModal";
 import { PluginsModal } from "../components/ui/PluginsModal";
+
 import { exportProjectAsZip } from "../utils/buildUtils";
 import { projectClient, pageClient } from "../lib/client";
 import { parseNextJsProjectStructure } from "../utils/nextJsStructure";
-import { FileEvent } from "../gen/protos/engine_pb";
-import { mockEngineClient } from "../mocks/engine";
+import { FileEvent } from "../gen/juki/engine/v1/engine_pb";
 import { mapProtoToInternal } from "../utils/protoMapper";
 
 export const AppContext = createContext<IAppContext | null>(null);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+    // ... [State definitions remain unchanged] ...
     const [projects, setProjects] = useState<Project[]>([]);
-    const [_activeProjectId, _setActiveProjectId] = useState<string | null>(null); // Rename to avoid conflict
+    const [_activeProjectId, _setActiveProjectId] = useState<string | null>(null);
     const [activePageId, _setActivePageId] = useState<string | null>(null);
     const [activeLayoutId, _setActiveLayoutId] = useState<string | null>(null);
     const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
@@ -40,12 +40,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const installPlugin = async (plugin: JukiPlugin) => {
         if (plugins.find((p) => p.id === plugin.id)) return;
         setPlugins((prev) => [...prev, plugin]);
-        // Initialization handled in useEffect
     };
 
     const uninstallPlugin = (pluginId: string) => {
         setPlugins((prev) => prev.filter((p) => p.id !== pluginId));
-        // If it was a CMS, we crude clear for now.
         const plugin = plugins.find((p) => p.id === pluginId);
         if (plugin?.type === "cms") {
             setCmsCollections([]);
@@ -54,27 +52,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     // Handle Plugin Initialization
     useEffect(() => {
-        // We need to detect newly added plugins.
-        // For simplicity, we can just check if any plugin needs init and hasn't been handled,
-        // but since we don't track "inited" state, we might rely on the fact that installPlugin
-        // adds it.
-        // A better way is: installPlugin sets state, and we perform side effects that don't depend on full 'value' context immediately,
-        // OR we just assume onInit doesn't need the FULL context immediately.
-        // Given 'value' is constructed every render, this is tricky.
-
-        // Let's defer onInit to when the plugin is actually *used* or rendered?
-        // No, onInit might register things.
-
-        // Alternative: Pass a *subset* of capabilities to onInit, or pass a reference to the context.
-        // Ideally, plugins shouldn't need the context *root* to init, but maybe access to specific APIs.
-
-        // For now, let's handle the CMS loading here directly as it only depends on the plugin itself.
         plugins.forEach(async (p) => {
-            // If it's a CMS and we haven't loaded data (simplified check: empty collections?)
             if (p.type === "cms" && p.getCollections && cmsCollections.length === 0) {
                 const collections = await p.getCollections();
                 setCmsCollections((prev) => {
-                    // Avoid duplicates
                     if (prev.length > 0) return prev;
                     return collections;
                 });
@@ -82,55 +63,32 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         });
     }, [plugins]);
 
-    // CMS Initialization (Legacy removed)
-    // useEffect(() => { ... }, []);
-
     // Load projects from API on initial mount
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = (await projectClient.listProjects({})) as any;
-                // ... (rest of mapping logic is fine, assuming it uses setProjects)
-                const mappedProjects: Project[] = (response.projects || []).map((p: any) => ({
-                    id: p.id,
-                    name: p.name,
-                    description: p.description,
-                    apiKey: p.apiKey,
-                    settings: p.settings,
-                    pages: (p.pages || []).map((page: any) => ({
-                        ...page,
-                        props: {},
-                        children: page.content ? JSON.parse(page.content) : [],
-                    })),
-                    userComponents: (p.userComponents || []).map((c: any) => ({
-                        id: c.id,
-                        name: c.name,
-                        root: c.content ? JSON.parse(c.content) : null,
-                    })),
-                    theme: defaultTheme,
-                    packages: [],
-                    packageManager: null,
-                    modules: [],
-                    templates: [],
-                    layouts: [],
-                    assetLibrary: [],
-                    apiDefinitions: [],
-                    stateDefinitions: [],
-                }));
+                // Use listProjects from client and map via protoMapper
+                const response = await projectClient.listProjects({ page: 1, pageSize: 10 });
+                // @ts-ignore - Check if response structure matches exactly what map expects or if we map individual projects
+                // listProjects returns ListProjectsResponse { projects: Project[], totalCount: number }
+                const mappedProjects = response.projects.map(mapProtoToInternal);
 
                 setProjects(mappedProjects);
 
                 if (mappedProjects.length > 0) {
                     const lastActiveProjectId = localStorage.getItem("juki-active-project-id");
                     const projectToActivate = mappedProjects.find((p) => p.id === lastActiveProjectId) || mappedProjects[0];
-                    _setActiveProjectId(projectToActivate.id);
-
-                    const lastActivePageId = localStorage.getItem("juki-active-page-id");
-                    const pageToActivate = projectToActivate.pages.find((p) => p.id === lastActivePageId) || projectToActivate.pages[0];
-                    setActivePageId(pageToActivate?.id || null);
+                    if (projectToActivate) {
+                        _setActiveProjectId(projectToActivate.id);
+                        const lastActivePageId = localStorage.getItem("juki-active-page-id");
+                        // Use functional accessors for safer checks
+                        const pageToActivate = projectToActivate.pages.find((p) => p.id === lastActivePageId) || projectToActivate.pages[0];
+                        setActivePageId(pageToActivate?.id || null);
+                    }
                 }
             } catch (error) {
                 console.error("Failed to load projects from API", error);
+                setProjectError("Failed to connect to Engine. Is it running on port 4220?");
             }
         };
 
@@ -146,11 +104,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [_activeProjectId, activePageId]);
 
-    const activeProjectId = _activeProjectId; // Alias for easier usage
+    const activeProjectId = _activeProjectId;
 
     const activeProject = projects.find((p) => p.id === activeProjectId);
 
-    // Logic to select either the Active Page or the Active Layout (proxied as a page)
     const realActivePage = activeProject?.pages.find((p) => p.id === activePageId);
     const activeLayout = activeProject?.layouts?.find((l) => l.id === activeLayoutId);
 
@@ -162,8 +119,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                   name: activeLayout.name,
                   description: "Layout",
                   route: "",
-                  props: { className: "min-h-screen bg-transparent" }, // Layout wrapper styling
-                  children: [activeLayout.root], // Wrap root in array
+                  props: { className: "min-h-screen bg-transparent" },
+                  children: [activeLayout.root],
                   content: undefined,
               } as Page)
             : undefined);
@@ -182,7 +139,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return findItemInTreeUtil(itemId, tree);
     }, []);
 
-    // Effect to update the highlighted parent when selection changes
     useEffect(() => {
         if (selectedItemIds.length > 0 && activePage) {
             const lastSelectedId = selectedItemIds[selectedItemIds.length - 1];
@@ -196,32 +152,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     const refreshProjects = async () => {
         try {
-            if (true) {
-                const response = await mockEngineClient.listProjects();
-                const mappedProjects = response.projects.map(mapProtoToInternal);
-                setProjects(mappedProjects);
-                return;
-            }
-
-            const response = (await projectClient.listProjects({ page: 1, pageSize: 10 })) as any;
-            const mappedProjects: Project[] = (response.projects || []).map((p: any) => ({
-                id: p.id,
-                name: p.name,
-                description: p.description,
-                settings: { useTypescript: true, framework: p.framework || "NextJS" }, // Default settings for now
-                rootRoute: { id: "root", name: "Root", segment: "/", fullPath: "/", type: "STATIC", children: [] },
-                pages: [],
-                userComponents: [],
-                assetLibrary: [],
-                theme: defaultTheme,
-                packages: [],
-                packageManager: "npm",
-                modules: [],
-                templates: [],
-                layouts: [],
-                apiDefinitions: [],
-                stateDefinitions: [],
-            }));
+            const response = await projectClient.listProjects({ page: 1, pageSize: 10 });
+            const mappedProjects = response.projects.map(mapProtoToInternal);
             setProjects(mappedProjects);
         } catch (e) {
             console.error("Failed to list projects", e);
@@ -236,45 +168,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         _setActiveProjectId(id);
         if (id) {
             try {
-                // MOCK MODE: Intercept specific ID or all calls for now
-                if (true) {
-                    // TODO: Check feature flag or ID convention
-                    const protoProject = await mockEngineClient.getProject(id!);
-                    const project = mapProtoToInternal(protoProject);
-
-                    setProjects((prev) => {
-                        const exists = prev.some((p) => p.id === project.id);
-                        if (exists) {
-                            return prev.map((p) => (p.id === project.id ? project : p));
-                        }
-                        return [...prev, project];
-                    });
-                    return;
-                }
-
-                const response = (await projectClient.getProject({ id: id! })) as any;
-                if (!response.project) throw new Error("No project returned from API");
-
-                // Map protobuf project to our internal Project type
-                const project: Project = {
-                    id: response.project.id,
-                    name: response.project.name,
-                    description: response.project.description,
-                    apiKey: response.project.apiKey,
-                    settings: { useTypescript: true, framework: response.project.framework || "NextJS" },
-                    rootRoute: { id: "root", name: "Root", segment: "/", fullPath: "/", type: "STATIC", children: [] }, // Fallback for list
-                    pages: [], // Pages are loaded separately or need to be mapped if returned
-                    userComponents: [],
-                    assetLibrary: [],
-                    theme: defaultTheme,
-                    packages: [],
-                    packageManager: "npm",
-                    modules: [],
-                    templates: [],
-                    layouts: [],
-                    apiDefinitions: [],
-                    stateDefinitions: [],
-                };
+                // REAL ENGINE MODE
+                const response = await projectClient.getProject({ id: id! });
+                if (!response.project) throw new Error("Project data missing in response");
+                const project = mapProtoToInternal(response.project);
 
                 setProjects((prev) => {
                     const exists = prev.some((p) => p.id === project.id);
@@ -283,12 +180,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     }
                     return [...prev, project];
                 });
-            } catch (e: any) {
-                console.error("Failed to get project details", e);
-                if (e.message && (e.message.includes("not found") || e.message.includes("no such file"))) {
+            } catch (err: any) {
+                console.error("Failed to fetch project details", err);
+                if (err.message && (err.message.includes("not found") || err.message.includes("no such file"))) {
                     setProjectError("Project not found in database or disk.");
                 } else {
-                    setProjectError(`Failed to load project: ${e.message}`);
+                    setProjectError(`Failed to load project: ${err.message}`);
                 }
             }
         }

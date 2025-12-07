@@ -1,6 +1,6 @@
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { EngineService } from "../gen/protos/engine_connect";
+import { EngineService } from "../gen/juki/engine/v1/engine_connect";
 
 const transport = createConnectTransport({
   baseUrl: "http://localhost:4220", // Engine port

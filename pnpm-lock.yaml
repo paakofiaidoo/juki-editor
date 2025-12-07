@@ -124,7 +124,7 @@ importers:
         specifier: 1.10.1
         version: 1.10.1(@bufbuild/protobuf@1.10.1)
       '@connectrpc/protoc-gen-connect-es':
-        specifier: ^1.7.0
+        specifier: ^1.6.0
         version: 1.7.0(@bufbuild/protoc-gen-es@1.10.1(@bufbuild/protobuf@1.10.1))(@connectrpc/connect@1.7.0(@bufbuild/protobuf@1.10.1))
       '@eslint/js':
         specifier: ^9.39.1

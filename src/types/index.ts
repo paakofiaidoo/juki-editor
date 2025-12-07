@@ -142,6 +142,7 @@ export interface Project {
     theme: Theme;
     packages: PackageDependency[];
     packageManager: PackageManager | null;
+    port?: number;
 }
 
 // Drag and Drop Types
