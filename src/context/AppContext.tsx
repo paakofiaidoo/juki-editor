@@ -180,10 +180,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     }
                     return [...prev, project];
                 });
+
+                // Auto-Run Project
+                try {
+                    await projectClient.runProject({ projectId: id });
+                    console.log(`[AppContext] Auto-run triggered for project ${id}`);
+                } catch (runErr) {
+                    console.error("[AppContext] Failed to auto-run project:", runErr);
+                }
             } catch (err: any) {
-                console.error("Failed to fetch project details", err);
-                if (err.message && (err.message.includes("not found") || err.message.includes("no such file"))) {
-                    setProjectError("Project not found in database or disk.");
+                console.error("Failed to load project:", err);
+                _setActiveProjectId(null); // Clear active project on error
+
+                const isNotFound = err.message && (err.message.includes("not found") || err.message.includes("no such file") || err.message.includes("does not exist"));
+
+                if (isNotFound) {
+                    setProjectError("Project not found in database or disk. Removing from list.");
+                    // Self-healing: Remove the invalid project from the list
+                    setProjects((prev) => prev.filter((p) => p.id !== id));
                 } else {
                     setProjectError(`Failed to load project: ${err.message}`);
                 }

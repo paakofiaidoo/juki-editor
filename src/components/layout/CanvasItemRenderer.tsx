@@ -41,6 +41,16 @@ export const CanvasItemRenderer: React.FC<CanvasItemRendererProps> = ({ item }) 
         return fieldValue;
     };
 
+    const [isHoveringLong, setIsHoveringLong] = useState(false);
+    const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Clean up timer on unmount
+    useEffect(() => {
+        return () => {
+            if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+        };
+    }, []);
+
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
@@ -56,23 +66,38 @@ export const CanvasItemRenderer: React.FC<CanvasItemRendererProps> = ({ item }) 
                 element: el,
                 getData: ({ input, element }) => {
                     const data = { type: "canvas-item", itemId: item.id, item };
+                    // If we've hovered long enough, don't attach an edge, implied "inside" drop
+                    if (isHoveringLong) return data;
                     return attachClosestEdge(data, { input, element, allowedEdges: ["top", "bottom", "left", "right"] });
                 },
                 onDragEnter: ({ self }) => {
                     setClosestEdge(extractClosestEdge(self.data));
+
+                    // Start 3s timer to switch to nesting mode
+                    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                    hoverTimerRef.current = setTimeout(() => {
+                        setIsHoveringLong(true);
+                        setClosestEdge(null); // Clear edge visualization
+                    }, 3000);
                 },
                 onDrag: ({ self }) => {
-                    setClosestEdge(extractClosestEdge(self.data));
+                    if (!isHoveringLong) {
+                        setClosestEdge(extractClosestEdge(self.data));
+                    }
                 },
                 onDragLeave: () => {
                     setClosestEdge(null);
+                    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                    setIsHoveringLong(false);
                 },
                 onDrop: () => {
                     setClosestEdge(null);
+                    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                    setIsHoveringLong(false);
                 },
             })
         );
-    }, [item]);
+    }, [item, isHoveringLong]); // Re-bind when isHoveringLong changes to update getData behavior
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -214,7 +239,7 @@ export const CanvasItemRenderer: React.FC<CanvasItemRendererProps> = ({ item }) 
     return (
         <div ref={ref} className={`relative ${isDragging ? "opacity-50" : ""}`}>
             <DropIndicator edge={closestEdge} gap="2px" />
-            <SelectionWrapper item={item} isSelected={isSelected} isHighlightedParent={isHighlightedParent} onClick={handleClick}>
+            <SelectionWrapper item={item} isSelected={isSelected} isHighlightedParent={isHighlightedParent || isHoveringLong} onClick={handleClick}>
                 {renderItem()}
             </SelectionWrapper>
         </div>
