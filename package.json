@@ -15,7 +15,7 @@
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
     "@atlaskit/pragmatic-drag-and-drop-react-drop-indicator": "^3.2.8",
     "@buf/paakofiaidoo_juki.grpc_web": "2.0.2-20250519003051-6cda3e11f0fa.1",
-    "@bufbuild/protobuf": "1.10.1",
+    "@bufbuild/protobuf": "^1.10.0",
     "@connectrpc/connect": "^1.7.0",
     "@connectrpc/connect-web": "^1.7.0",
     "@google/genai": "^1.28.0",

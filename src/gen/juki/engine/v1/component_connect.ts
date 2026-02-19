@@ -3,9 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateComponentRequest, DeleteComponentRequest, ListComponentsRequest, ListComponentsResponse, UpdateComponentRequest, UserComponent } from "./component_pb.js";
+import { CreateComponentRequest, CreateComponentResponse, DeleteComponentRequest, DeleteComponentResponse, ListComponentsRequest, ListComponentsResponse, UpdateComponentRequest, UpdateComponentResponse } from "./component_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
-import { Empty } from "../../common/v1/common_pb.js";
 
 /**
  * @generated from service juki.engine.v1.ComponentService
@@ -19,7 +18,7 @@ export const ComponentService = {
     createComponent: {
       name: "CreateComponent",
       I: CreateComponentRequest,
-      O: UserComponent,
+      O: CreateComponentResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -28,7 +27,7 @@ export const ComponentService = {
     updateComponent: {
       name: "UpdateComponent",
       I: UpdateComponentRequest,
-      O: UserComponent,
+      O: UpdateComponentResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -37,7 +36,7 @@ export const ComponentService = {
     deleteComponent: {
       name: "DeleteComponent",
       I: DeleteComponentRequest,
-      O: Empty,
+      O: DeleteComponentResponse,
       kind: MethodKind.Unary,
     },
     /**

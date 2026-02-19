@@ -3,9 +3,9 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConfigureCMSRequest, ConfigureCMSResponse, FileEvent, InstallPluginRequest, InstallPluginResponse, PingRequest, PingResponse, RunSwarmRequest, SubscribeToFileEventsRequest, SwarmEvent } from "./engine_pb.js";
+import { ConfigureCMSRequest, ConfigureCMSResponse, InstallPluginRequest, InstallPluginResponse, PingRequest, PingResponse, RunSwarmRequest, RunSwarmResponse, SubscribeToFileEventsRequest, SubscribeToFileEventsResponse } from "./engine_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
-import { BuildProjectRequest, BuildProjectResponse, CreateProjectRequest, CreateProjectResponse, DeleteProjectRequest, DeleteProjectResponse, GetProjectRequest, GetProjectResponse, ListProjectsRequest, ListProjectsResponse, SyncProjectRequest, SyncProjectResponse, UpdateProjectRequest, UpdateProjectResponse } from "./project_pb.js";
+import { BuildProjectRequest, BuildProjectResponse, CreateProjectRequest, CreateProjectResponse, DeleteProjectRequest, DeleteProjectResponse, GetProjectRequest, GetProjectResponse, ListProjectsRequest, ListProjectsResponse, RunProjectRequest, RunProjectResponse, SyncProjectRequest, SyncProjectResponse, UpdateProjectRequest, UpdateProjectResponse } from "./project_pb.js";
 import { CreatePageRequest, CreatePageResponse, GetPageRequest, GetPageResponse, SavePageRequest, SavePageResponse } from "./page_pb.js";
 
 /**
@@ -91,6 +91,15 @@ export const EngineService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc juki.engine.v1.EngineService.RunProject
+     */
+    runProject: {
+      name: "RunProject",
+      I: RunProjectRequest,
+      O: RunProjectResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * Pages
      *
      * @generated from rpc juki.engine.v1.EngineService.CreatePage
@@ -151,7 +160,7 @@ export const EngineService = {
     runSwarm: {
       name: "RunSwarm",
       I: RunSwarmRequest,
-      O: SwarmEvent,
+      O: RunSwarmResponse,
       kind: MethodKind.ServerStreaming,
     },
     /**
@@ -162,7 +171,7 @@ export const EngineService = {
     subscribeToFileEvents: {
       name: "SubscribeToFileEvents",
       I: SubscribeToFileEventsRequest,
-      O: FileEvent,
+      O: SubscribeToFileEventsResponse,
       kind: MethodKind.ServerStreaming,
     },
   }

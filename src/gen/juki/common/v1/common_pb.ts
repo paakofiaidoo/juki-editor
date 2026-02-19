@@ -13,29 +13,29 @@ export enum PageType {
   /**
    * @generated from enum value: PAGE_TYPE_UNSPECIFIED = 0;
    */
-  PAGE_TYPE_UNSPECIFIED = 0,
+  UNSPECIFIED = 0,
 
   /**
-   * @generated from enum value: STATIC = 1;
+   * @generated from enum value: PAGE_TYPE_STATIC = 1;
    */
   STATIC = 1,
 
   /**
-   * @generated from enum value: DYNAMIC = 2;
+   * @generated from enum value: PAGE_TYPE_DYNAMIC = 2;
    */
   DYNAMIC = 2,
 
   /**
-   * @generated from enum value: CATCH_ALL = 3;
+   * @generated from enum value: PAGE_TYPE_CATCH_ALL = 3;
    */
   CATCH_ALL = 3,
 }
 // Retrieve enum metadata with: proto3.getEnumType(PageType)
 proto3.util.setEnumType(PageType, "juki.common.v1.PageType", [
   { no: 0, name: "PAGE_TYPE_UNSPECIFIED" },
-  { no: 1, name: "STATIC" },
-  { no: 2, name: "DYNAMIC" },
-  { no: 3, name: "CATCH_ALL" },
+  { no: 1, name: "PAGE_TYPE_STATIC" },
+  { no: 2, name: "PAGE_TYPE_DYNAMIC" },
+  { no: 3, name: "PAGE_TYPE_CATCH_ALL" },
 ]);
 
 /**
@@ -45,23 +45,23 @@ export enum AccessType {
   /**
    * @generated from enum value: ACCESS_TYPE_UNSPECIFIED = 0;
    */
-  ACCESS_TYPE_UNSPECIFIED = 0,
+  UNSPECIFIED = 0,
 
   /**
-   * @generated from enum value: PUBLIC = 1;
+   * @generated from enum value: ACCESS_TYPE_PUBLIC = 1;
    */
   PUBLIC = 1,
 
   /**
-   * @generated from enum value: PROTECTED = 2;
+   * @generated from enum value: ACCESS_TYPE_PROTECTED = 2;
    */
   PROTECTED = 2,
 }
 // Retrieve enum metadata with: proto3.getEnumType(AccessType)
 proto3.util.setEnumType(AccessType, "juki.common.v1.AccessType", [
   { no: 0, name: "ACCESS_TYPE_UNSPECIFIED" },
-  { no: 1, name: "PUBLIC" },
-  { no: 2, name: "PROTECTED" },
+  { no: 1, name: "ACCESS_TYPE_PUBLIC" },
+  { no: 2, name: "ACCESS_TYPE_PROTECTED" },
 ]);
 
 /**

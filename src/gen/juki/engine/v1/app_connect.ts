@@ -5,8 +5,7 @@
 
 //package editor.app;
 
-import { Empty } from "../../common/v1/common_pb.js";
-import { AppInfo, UpdateAppNameRequest } from "./app_pb.js";
+import { GetAppInfoRequest, GetAppInfoResponse, UpdateAppNameRequest, UpdateAppNameResponse } from "./app_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -20,8 +19,8 @@ export const AppService = {
      */
     getAppInfo: {
       name: "GetAppInfo",
-      I: Empty,
-      O: AppInfo,
+      I: GetAppInfoRequest,
+      O: GetAppInfoResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -30,7 +29,7 @@ export const AppService = {
     updateAppName: {
       name: "UpdateAppName",
       I: UpdateAppNameRequest,
-      O: AppInfo,
+      O: UpdateAppNameResponse,
       kind: MethodKind.Unary,
     },
   }

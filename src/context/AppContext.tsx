@@ -14,7 +14,7 @@ import { PluginsModal } from "../components/ui/PluginsModal";
 import { exportProjectAsZip } from "../utils/buildUtils";
 import { projectClient, pageClient } from "../lib/client";
 import { parseNextJsProjectStructure } from "../utils/nextJsStructure";
-import { FileEvent } from "../gen/juki/engine/v1/engine_pb";
+import { SubscribeToFileEventsResponse } from "../gen/juki/engine/v1/engine_pb";
 import { mapProtoToInternal } from "../utils/protoMapper";
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -82,7 +82,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                         _setActiveProjectId(projectToActivate.id);
                         const lastActivePageId = localStorage.getItem("juki-active-page-id");
                         // Use functional accessors for safer checks
-                        const pageToActivate = projectToActivate.pages.find((p) => p.id === lastActivePageId) || projectToActivate.pages[0];
+                        const pageToActivate = projectToActivate.pages.find((p: Page) => p.id === lastActivePageId) || projectToActivate.pages[0];
                         setActivePageId(pageToActivate?.id || null);
                     }
                 }
@@ -218,10 +218,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                         id: p.id,
                         name: p.name,
                         route: p.route,
-                        // Proto might name it rawContent or content depending on version. We handle both.
                         content: p.content,
+                        composedContent: p.composed_content, // Map from snake_case in API to camelCase in frontend
                         rawContent: p.rawContent,
-                        path: p.path || p.name, // Fallback to name if path missing
+                        path: p.path || p.name,
                     }));
 
                     const { pages, layouts } = parseNextJsProjectStructure(rawInputs);
@@ -268,7 +268,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const subscribe = async () => {
             try {
                 console.log("Subscribing to file events for project:", activeProjectId);
-                const stream = (await projectClient.subscribeToFileEvents({ projectId: activeProjectId }, { signal: abortController.signal })) as AsyncIterable<FileEvent>;
+                const stream = (await projectClient.subscribeToFileEvents({ projectId: activeProjectId }, { signal: abortController.signal })) as AsyncIterable<SubscribeToFileEventsResponse>;
 
                 for await (const event of stream) {
                     console.log("File Event Received:", event);
@@ -350,7 +350,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     name: project.name,
                     description: project.description,
                     path: project.path || "",
-                    framework: project.settings.framework,
+                    settings: {
+                        framework: project.settings.framework,
+                        useTypescript: project.settings.useTypescript,
+                    },
                     apiKey: project.apiKey,
                 },
             });

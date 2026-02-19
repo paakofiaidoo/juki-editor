@@ -492,11 +492,11 @@ export class SwarmResult extends Message<SwarmResult> {
 }
 
 /**
- * @generated from message juki.engine.v1.SwarmEvent
+ * @generated from message juki.engine.v1.RunSwarmResponse
  */
-export class SwarmEvent extends Message<SwarmEvent> {
+export class RunSwarmResponse extends Message<RunSwarmResponse> {
   /**
-   * @generated from oneof juki.engine.v1.SwarmEvent.event
+   * @generated from oneof juki.engine.v1.RunSwarmResponse.event
    */
   event: {
     /**
@@ -518,33 +518,33 @@ export class SwarmEvent extends Message<SwarmEvent> {
     case: "result";
   } | { case: undefined; value?: undefined } = { case: undefined };
 
-  constructor(data?: PartialMessage<SwarmEvent>) {
+  constructor(data?: PartialMessage<RunSwarmResponse>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "juki.engine.v1.SwarmEvent";
+  static readonly typeName = "juki.engine.v1.RunSwarmResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "plan", kind: "message", T: SwarmPlan, oneof: "event" },
     { no: 2, name: "log", kind: "message", T: SwarmLog, oneof: "event" },
     { no: 3, name: "result", kind: "message", T: SwarmResult, oneof: "event" },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SwarmEvent {
-    return new SwarmEvent().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunSwarmResponse {
+    return new RunSwarmResponse().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SwarmEvent {
-    return new SwarmEvent().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RunSwarmResponse {
+    return new RunSwarmResponse().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SwarmEvent {
-    return new SwarmEvent().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RunSwarmResponse {
+    return new RunSwarmResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: SwarmEvent | PlainMessage<SwarmEvent> | undefined, b: SwarmEvent | PlainMessage<SwarmEvent> | undefined): boolean {
-    return proto3.util.equals(SwarmEvent, a, b);
+  static equals(a: RunSwarmResponse | PlainMessage<RunSwarmResponse> | undefined, b: RunSwarmResponse | PlainMessage<RunSwarmResponse> | undefined): boolean {
+    return proto3.util.equals(RunSwarmResponse, a, b);
   }
 }
 
@@ -588,9 +588,9 @@ export class SubscribeToFileEventsRequest extends Message<SubscribeToFileEventsR
 }
 
 /**
- * @generated from message juki.engine.v1.FileEvent
+ * @generated from message juki.engine.v1.SubscribeToFileEventsResponse
  */
-export class FileEvent extends Message<FileEvent> {
+export class SubscribeToFileEventsResponse extends Message<SubscribeToFileEventsResponse> {
   /**
    * @generated from field: string path = 1;
    */
@@ -603,32 +603,32 @@ export class FileEvent extends Message<FileEvent> {
    */
   type = "";
 
-  constructor(data?: PartialMessage<FileEvent>) {
+  constructor(data?: PartialMessage<SubscribeToFileEventsResponse>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "juki.engine.v1.FileEvent";
+  static readonly typeName = "juki.engine.v1.SubscribeToFileEventsResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "path", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): FileEvent {
-    return new FileEvent().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SubscribeToFileEventsResponse {
+    return new SubscribeToFileEventsResponse().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): FileEvent {
-    return new FileEvent().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SubscribeToFileEventsResponse {
+    return new SubscribeToFileEventsResponse().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): FileEvent {
-    return new FileEvent().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SubscribeToFileEventsResponse {
+    return new SubscribeToFileEventsResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: FileEvent | PlainMessage<FileEvent> | undefined, b: FileEvent | PlainMessage<FileEvent> | undefined): boolean {
-    return proto3.util.equals(FileEvent, a, b);
+  static equals(a: SubscribeToFileEventsResponse | PlainMessage<SubscribeToFileEventsResponse> | undefined, b: SubscribeToFileEventsResponse | PlainMessage<SubscribeToFileEventsResponse> | undefined): boolean {
+    return proto3.util.equals(SubscribeToFileEventsResponse, a, b);
   }
 }
 

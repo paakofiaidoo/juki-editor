@@ -19,12 +19,12 @@ export class CreatePageRequest extends Message<CreatePageRequest> {
   /**
    * @generated from field: juki.common.v1.PageType type = 2;
    */
-  type = PageType.PAGE_TYPE_UNSPECIFIED;
+  type = PageType.UNSPECIFIED;
 
   /**
    * @generated from field: juki.common.v1.AccessType access = 3;
    */
-  access = AccessType.ACCESS_TYPE_UNSPECIFIED;
+  access = AccessType.UNSPECIFIED;
 
   /**
    * @generated from field: string project_id = 4;
@@ -300,12 +300,12 @@ export class UpdatePageRequest extends Message<UpdatePageRequest> {
   /**
    * @generated from field: juki.common.v1.PageType type = 4;
    */
-  type = PageType.PAGE_TYPE_UNSPECIFIED;
+  type = PageType.UNSPECIFIED;
 
   /**
    * @generated from field: juki.common.v1.AccessType access = 5;
    */
-  access = AccessType.ACCESS_TYPE_UNSPECIFIED;
+  access = AccessType.UNSPECIFIED;
 
   /**
    * @generated from field: string content = 6;
@@ -496,12 +496,12 @@ export class Page extends Message<Page> {
   /**
    * @generated from field: juki.common.v1.PageType type = 4;
    */
-  type = PageType.PAGE_TYPE_UNSPECIFIED;
+  type = PageType.UNSPECIFIED;
 
   /**
    * @generated from field: juki.common.v1.AccessType access = 5;
    */
-  access = AccessType.ACCESS_TYPE_UNSPECIFIED;
+  access = AccessType.UNSPECIFIED;
 
   /**
    * JSON stringified page content
@@ -530,6 +530,11 @@ export class Page extends Message<Page> {
    */
   rawContent = "";
 
+  /**
+   * @generated from field: string composed_content = 11;
+   */
+  composedContent = "";
+
   constructor(data?: PartialMessage<Page>) {
     super();
     proto3.util.initPartial(data, this);
@@ -548,6 +553,7 @@ export class Page extends Message<Page> {
     { no: 8, name: "layout_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "meta", kind: "message", T: Metadata },
     { no: 10, name: "raw_content", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "composed_content", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Page {

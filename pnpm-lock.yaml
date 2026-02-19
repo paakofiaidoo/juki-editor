@@ -27,7 +27,7 @@ importers:
         specifier: 2.0.2-20250519003051-6cda3e11f0fa.1
         version: 2.0.2-20250519003051-6cda3e11f0fa.1(google-protobuf@3.21.4)(grpc-web@2.0.2)
       '@bufbuild/protobuf':
-        specifier: 1.10.1
+        specifier: ^1.10.0
         version: 1.10.1
       '@connectrpc/connect':
         specifier: ^1.7.0

@@ -3,11 +3,21 @@ import featureFlags from "../data/features.json";
 
 export type FeatureFlags = typeof featureFlags;
 
-const FeatureContext = createContext<FeatureFlags>(featureFlags);
+interface FeatureContextType {
+    flags: FeatureFlags;
+    setFlag: (key: keyof FeatureFlags, value: boolean) => void;
+}
+
+const FeatureContext = createContext<FeatureContextType | undefined>(undefined);
 
 export const FeatureProvider = ({ children }: { children: ReactNode }) => {
-    // We can just use the imported JSON directly as the value since we don't need runtime toggling anymore
-    return <FeatureContext.Provider value={featureFlags}>{children}</FeatureContext.Provider>;
+    const [flags, setFlags] = useState<FeatureFlags>(featureFlags);
+
+    const setFlag = (key: keyof FeatureFlags, value: boolean) => {
+        setFlags((prev) => ({ ...prev, [key]: value }));
+    };
+
+    return <FeatureContext.Provider value={{ flags, setFlag }}>{children}</FeatureContext.Provider>;
 };
 
 export const useFeatures = () => {
@@ -19,6 +29,6 @@ export const useFeatures = () => {
 };
 
 export const useFeature = (key: keyof FeatureFlags) => {
-    const flags = useFeatures();
+    const { flags } = useFeatures();
     return flags[key];
 };

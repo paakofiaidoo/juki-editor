@@ -57,6 +57,43 @@ export class CreateComponentRequest extends Message<CreateComponentRequest> {
 }
 
 /**
+ * @generated from message juki.engine.v1.CreateComponentResponse
+ */
+export class CreateComponentResponse extends Message<CreateComponentResponse> {
+  /**
+   * @generated from field: juki.engine.v1.UserComponent component = 1;
+   */
+  component?: UserComponent;
+
+  constructor(data?: PartialMessage<CreateComponentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.CreateComponentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "component", kind: "message", T: UserComponent },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateComponentResponse {
+    return new CreateComponentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateComponentResponse {
+    return new CreateComponentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateComponentResponse {
+    return new CreateComponentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreateComponentResponse | PlainMessage<CreateComponentResponse> | undefined, b: CreateComponentResponse | PlainMessage<CreateComponentResponse> | undefined): boolean {
+    return proto3.util.equals(CreateComponentResponse, a, b);
+  }
+}
+
+/**
  * @generated from message juki.engine.v1.UpdateComponentRequest
  */
 export class UpdateComponentRequest extends Message<UpdateComponentRequest> {
@@ -106,6 +143,43 @@ export class UpdateComponentRequest extends Message<UpdateComponentRequest> {
 }
 
 /**
+ * @generated from message juki.engine.v1.UpdateComponentResponse
+ */
+export class UpdateComponentResponse extends Message<UpdateComponentResponse> {
+  /**
+   * @generated from field: juki.engine.v1.UserComponent component = 1;
+   */
+  component?: UserComponent;
+
+  constructor(data?: PartialMessage<UpdateComponentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.UpdateComponentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "component", kind: "message", T: UserComponent },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateComponentResponse {
+    return new UpdateComponentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateComponentResponse {
+    return new UpdateComponentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateComponentResponse {
+    return new UpdateComponentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateComponentResponse | PlainMessage<UpdateComponentResponse> | undefined, b: UpdateComponentResponse | PlainMessage<UpdateComponentResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateComponentResponse, a, b);
+  }
+}
+
+/**
  * @generated from message juki.engine.v1.DeleteComponentRequest
  */
 export class DeleteComponentRequest extends Message<DeleteComponentRequest> {
@@ -139,6 +213,43 @@ export class DeleteComponentRequest extends Message<DeleteComponentRequest> {
 
   static equals(a: DeleteComponentRequest | PlainMessage<DeleteComponentRequest> | undefined, b: DeleteComponentRequest | PlainMessage<DeleteComponentRequest> | undefined): boolean {
     return proto3.util.equals(DeleteComponentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message juki.engine.v1.DeleteComponentResponse
+ */
+export class DeleteComponentResponse extends Message<DeleteComponentResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  constructor(data?: PartialMessage<DeleteComponentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.DeleteComponentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteComponentResponse {
+    return new DeleteComponentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteComponentResponse {
+    return new DeleteComponentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteComponentResponse {
+    return new DeleteComponentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteComponentResponse | PlainMessage<DeleteComponentResponse> | undefined, b: DeleteComponentResponse | PlainMessage<DeleteComponentResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteComponentResponse, a, b);
   }
 }
 

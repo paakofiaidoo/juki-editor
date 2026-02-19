@@ -7,6 +7,37 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from message juki.common.v1.ListThemesRequest
+ */
+export class ListThemesRequest extends Message<ListThemesRequest> {
+  constructor(data?: PartialMessage<ListThemesRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.common.v1.ListThemesRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListThemesRequest {
+    return new ListThemesRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListThemesRequest {
+    return new ListThemesRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListThemesRequest {
+    return new ListThemesRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ListThemesRequest | PlainMessage<ListThemesRequest> | undefined, b: ListThemesRequest | PlainMessage<ListThemesRequest> | undefined): boolean {
+    return proto3.util.equals(ListThemesRequest, a, b);
+  }
+}
+
+/**
  * @generated from message juki.common.v1.SetThemeRequest
  */
 export class SetThemeRequest extends Message<SetThemeRequest> {
@@ -77,6 +108,43 @@ export class ListThemesResponse extends Message<ListThemesResponse> {
 
   static equals(a: ListThemesResponse | PlainMessage<ListThemesResponse> | undefined, b: ListThemesResponse | PlainMessage<ListThemesResponse> | undefined): boolean {
     return proto3.util.equals(ListThemesResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message juki.common.v1.SetThemeResponse
+ */
+export class SetThemeResponse extends Message<SetThemeResponse> {
+  /**
+   * @generated from field: juki.common.v1.Theme theme = 1;
+   */
+  theme?: Theme;
+
+  constructor(data?: PartialMessage<SetThemeResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.common.v1.SetThemeResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "theme", kind: "message", T: Theme },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SetThemeResponse {
+    return new SetThemeResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SetThemeResponse {
+    return new SetThemeResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SetThemeResponse {
+    return new SetThemeResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SetThemeResponse | PlainMessage<SetThemeResponse> | undefined, b: SetThemeResponse | PlainMessage<SetThemeResponse> | undefined): boolean {
+    return proto3.util.equals(SetThemeResponse, a, b);
   }
 }
 

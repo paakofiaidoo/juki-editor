@@ -1,4 +1,10 @@
 import { parseComponentFileToCanvasItems } from "./jsxParser";
+import { Project as ProtoProject } from "../gen/juki/engine/v1/project_pb";
+import { Page as ProtoPage } from "../gen/juki/engine/v1/page_pb";
+import { Layout as ProtoLayout } from "../gen/juki/engine/v1/layout_pb";
+import { RouteNode as ProtoRouteNode } from "../gen/juki/engine/v1/route_pb";
+import { Page, Layout, AnyCanvasItem, Project, RouteNode } from "../types";
+import { PageType } from "../gen/juki/common/v1/common_pb";
 
 export const mapProtoToInternal = (proto: ProtoProject): Project => {
     return {
@@ -9,7 +15,7 @@ export const mapProtoToInternal = (proto: ProtoProject): Project => {
             useTypescript: proto.settings?.useTypescript || false,
             framework: (proto.settings?.framework || "NextJS") as "NextJS" | "Vite" | "Remix" | "Astro" | "HTML",
         },
-        rootRoute: proto.rootRoute ? mapProtoRouteNode(proto.rootRoute) : { id: "root", name: "Root", segment: "/", fullPath: "/", type: "STATIC", children: [] },
+        rootRoute: proto.rootRoute ? mapProtoRouteNode(proto.rootRoute) : { id: "root", name: "Root", segment: "/", fullPath: "/", type: "STATIC" as const, children: [] },
         pages: proto.pages.map(mapProtoPage),
         layouts: proto.layouts.map(mapProtoLayout),
         userComponents: [], // TODO: Map components if needed
@@ -74,7 +80,7 @@ const mapProtoPage = (p: ProtoPage): Page => {
         route: p.route,
         path: `app${p.route === "/" ? "" : p.route}/page.tsx`,
         props: {},
-        children: [],
+        children: p.composedContent ? JSON.parse(p.composedContent) : [],
         content: content,
         layoutId: p.layoutId,
     };
@@ -99,7 +105,7 @@ const mapProtoLayout = (l: ProtoLayout): Layout => {
 };
 
 const mapProtoRouteNode = (node: ProtoRouteNode): RouteNode => {
-    let type: "STATIC" | "DYNAMIC" | "CATCH_ALL" = "STATIC";
+    let type: "STATIC" | "DYNAMIC" | "CATCH_ALL" | "GROUP" = "STATIC";
     switch (node.type) {
         case PageType.STATIC: type = "STATIC"; break;
         case PageType.DYNAMIC: type = "DYNAMIC"; break;

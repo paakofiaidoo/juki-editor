@@ -3,8 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Empty } from "./common_pb.js";
-import { ListThemesResponse, SetThemeRequest, Theme } from "./theme_pb.js";
+import { ListThemesRequest, ListThemesResponse, SetThemeRequest, SetThemeResponse } from "./theme_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -18,7 +17,7 @@ export const ThemeService = {
      */
     listThemes: {
       name: "ListThemes",
-      I: Empty,
+      I: ListThemesRequest,
       O: ListThemesResponse,
       kind: MethodKind.Unary,
     },
@@ -28,7 +27,7 @@ export const ThemeService = {
     setTheme: {
       name: "SetTheme",
       I: SetThemeRequest,
-      O: Theme,
+      O: SetThemeResponse,
       kind: MethodKind.Unary,
     },
   }

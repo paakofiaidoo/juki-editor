@@ -23,6 +23,14 @@ export const initialProject: Project = {
   theme: defaultTheme,
   packageManager: null,
   packages: [],
+  rootRoute: {
+    id: 'root',
+    name: 'Root',
+    segment: '/',
+    fullPath: '/',
+    type: 'STATIC',
+    children: []
+  },
   pages: [
     {
       id: 'page_1',

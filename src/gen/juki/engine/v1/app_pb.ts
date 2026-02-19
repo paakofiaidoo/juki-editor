@@ -10,6 +10,74 @@ import { Message, proto3 } from "@bufbuild/protobuf";
 import { Metadata } from "../../common/v1/common_pb.js";
 
 /**
+ * @generated from message juki.engine.v1.GetAppInfoRequest
+ */
+export class GetAppInfoRequest extends Message<GetAppInfoRequest> {
+  constructor(data?: PartialMessage<GetAppInfoRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.GetAppInfoRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAppInfoRequest {
+    return new GetAppInfoRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAppInfoRequest {
+    return new GetAppInfoRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAppInfoRequest {
+    return new GetAppInfoRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetAppInfoRequest | PlainMessage<GetAppInfoRequest> | undefined, b: GetAppInfoRequest | PlainMessage<GetAppInfoRequest> | undefined): boolean {
+    return proto3.util.equals(GetAppInfoRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message juki.engine.v1.GetAppInfoResponse
+ */
+export class GetAppInfoResponse extends Message<GetAppInfoResponse> {
+  /**
+   * @generated from field: juki.engine.v1.AppInfo app_info = 1;
+   */
+  appInfo?: AppInfo;
+
+  constructor(data?: PartialMessage<GetAppInfoResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.GetAppInfoResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "app_info", kind: "message", T: AppInfo },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAppInfoResponse {
+    return new GetAppInfoResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAppInfoResponse {
+    return new GetAppInfoResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAppInfoResponse {
+    return new GetAppInfoResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetAppInfoResponse | PlainMessage<GetAppInfoResponse> | undefined, b: GetAppInfoResponse | PlainMessage<GetAppInfoResponse> | undefined): boolean {
+    return proto3.util.equals(GetAppInfoResponse, a, b);
+  }
+}
+
+/**
  * @generated from message juki.engine.v1.UpdateAppNameRequest
  */
 export class UpdateAppNameRequest extends Message<UpdateAppNameRequest> {
@@ -43,6 +111,43 @@ export class UpdateAppNameRequest extends Message<UpdateAppNameRequest> {
 
   static equals(a: UpdateAppNameRequest | PlainMessage<UpdateAppNameRequest> | undefined, b: UpdateAppNameRequest | PlainMessage<UpdateAppNameRequest> | undefined): boolean {
     return proto3.util.equals(UpdateAppNameRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message juki.engine.v1.UpdateAppNameResponse
+ */
+export class UpdateAppNameResponse extends Message<UpdateAppNameResponse> {
+  /**
+   * @generated from field: juki.engine.v1.AppInfo app_info = 1;
+   */
+  appInfo?: AppInfo;
+
+  constructor(data?: PartialMessage<UpdateAppNameResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.UpdateAppNameResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "app_info", kind: "message", T: AppInfo },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateAppNameResponse {
+    return new UpdateAppNameResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateAppNameResponse {
+    return new UpdateAppNameResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateAppNameResponse {
+    return new UpdateAppNameResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateAppNameResponse | PlainMessage<UpdateAppNameResponse> | undefined, b: UpdateAppNameResponse | PlainMessage<UpdateAppNameResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateAppNameResponse, a, b);
   }
 }
 

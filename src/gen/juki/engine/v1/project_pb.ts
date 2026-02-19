@@ -719,3 +719,89 @@ export class BuildProjectResponse extends Message<BuildProjectResponse> {
   }
 }
 
+/**
+ * @generated from message juki.engine.v1.RunProjectRequest
+ */
+export class RunProjectRequest extends Message<RunProjectRequest> {
+  /**
+   * @generated from field: string project_id = 1;
+   */
+  projectId = "";
+
+  constructor(data?: PartialMessage<RunProjectRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.RunProjectRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "project_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunProjectRequest {
+    return new RunProjectRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RunProjectRequest {
+    return new RunProjectRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RunProjectRequest {
+    return new RunProjectRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: RunProjectRequest | PlainMessage<RunProjectRequest> | undefined, b: RunProjectRequest | PlainMessage<RunProjectRequest> | undefined): boolean {
+    return proto3.util.equals(RunProjectRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message juki.engine.v1.RunProjectResponse
+ */
+export class RunProjectResponse extends Message<RunProjectResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message = "";
+
+  /**
+   * @generated from field: string url = 3;
+   */
+  url = "";
+
+  constructor(data?: PartialMessage<RunProjectResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "juki.engine.v1.RunProjectResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunProjectResponse {
+    return new RunProjectResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RunProjectResponse {
+    return new RunProjectResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RunProjectResponse {
+    return new RunProjectResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: RunProjectResponse | PlainMessage<RunProjectResponse> | undefined, b: RunProjectResponse | PlainMessage<RunProjectResponse> | undefined): boolean {
+    return proto3.util.equals(RunProjectResponse, a, b);
+  }
+}
+

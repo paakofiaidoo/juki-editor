@@ -42,7 +42,7 @@ export class RouteNode extends Message<RouteNode> {
    *
    * @generated from field: juki.common.v1.PageType type = 5;
    */
-  type = PageType.PAGE_TYPE_UNSPECIFIED;
+  type = PageType.UNSPECIFIED;
 
   /**
    * Computed Page ID if this node has a page.tsx
